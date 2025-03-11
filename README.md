@@ -55,3 +55,14 @@ decrease its priority by 2 (i.e., add 2 to its priority since lower numbers repr
 higher priority); if a process is waken up from waiting, increase its priority by 2.
 In this part, I added code to function wakeup1 in proc.c, and function
 trap in trap.c.
+
+Page Fault Handler:
+
+In UNIX, the fork syscall creates an exact copy of the parent process. Xv6 implements it by simply making a copy of
+the parent’s memory and other resources (fork in proc.c). Specifically, it first allocates a process control block for
+the child process (allocproc), clones the parent’s memory with copyuvm, and duplicates the files with filedup etc.
+In this project, I replaced copyuvm with copyuvm_cow. Copyuvm takes two parameters: pgdir is the parent’s page directory 1 , sz is the size of the user-mode memory (proc->sz).
+Copyuvm first maps the kernel to the child process (setupkvm). The return value of setupkvm is the page directory
+for the child process. For each user page, copyuvm first reads the parent’s page table entry (walkpgdir), which
+consists of the address of the physical frame and the protection bits. It then allocates a new page (kalloc) and copies
+the parent’s memory to this page (memmove). Finally, it maps the new page to the child process (mappages).
