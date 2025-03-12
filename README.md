@@ -56,7 +56,7 @@ higher priority); if a process is waken up from waiting, increase its priority b
 In this part, I added code to function wakeup1 in proc.c, and function
 trap in trap.c.
 
-Page Fault Handler:
+**Page Fault Handler:**
 
 In UNIX, the fork syscall creates an exact copy of the parent process. Xv6 implements it by simply making a copy of
 the parent’s memory and other resources (fork in proc.c). Specifically, it first allocates a process control block for
